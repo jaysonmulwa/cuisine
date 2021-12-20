@@ -17,8 +17,6 @@ func (a *App) Run() error {
 }
 
 func main() {
-
-	fmt.Println("Jayson Worlds")
 	app := App{}
 	if err := app.Run(); err != nil {
 		fmt.Println("Err")
