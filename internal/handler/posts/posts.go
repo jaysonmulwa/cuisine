@@ -161,7 +161,37 @@ func UpdatePost(c *fiber.Ctx) error {
 }
 
 func DeletePost(c *fiber.Ctx) error {
-	//Update the record -- ActiveInd = 0
-	c.SendString("Hello, World!")
-	return nil
+	id := c.Params("id")
+
+	var err error
+
+	postId, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		return c.SendStatus(400)
+	}
+
+	post := new(model.Post)
+
+	if err := c.BodyParser(post); err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	update := bson.D{
+		{Key: "active_ind", Value: 0},
+	}
+
+	err = db.GetMongo().Db.Collection("posts").FindOneAndUpdate(c.Context(), bson.M{"_id": postId}, update).Err()
+
+	if err != nil {
+		// ErrNoDocuments means that the filter did not match any documents in the collection
+		if err == mongo.ErrNoDocuments {
+			return c.SendStatus(404)
+		}
+		return c.SendStatus(500)
+	}
+
+	// return the updated order
+	post.ID = id
+	return c.Status(200).JSON(post)
 }
