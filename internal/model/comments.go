@@ -11,4 +11,6 @@ type Comment struct {
 	Active_ind   int    `json:"active_ind" bson:"active_ind"`
 	Flag_ind     int    `json:"flag_ind" bson:"flag_ind"`
 	Flagger_id   string `json:"flagger_id" bson:"flagger_id"`
+	Flag_reason  string `json:"flag_reason" bson:"flag_reason"`
+	Flag_date    string `json:"flag_date" bson:"flag_date"`
 }
