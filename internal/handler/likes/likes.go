@@ -11,6 +11,28 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+func GetLikes(c *fiber.Ctx) error {
+
+	// get all records as a cursor
+	query := bson.D{{}}
+	cursor, err := db.GetMongo().Db.Collection("likes").Find(c.Context(), query)
+	if err != nil {
+		return c.Status(500).SendString(err.Error())
+	}
+
+	var likes []model.Like = make([]model.Like, 0)
+
+	// iterate the cursor and decode each item into an Order
+	if err := cursor.All(c.Context(), &likes); err != nil {
+		return c.Status(500).SendString(err.Error())
+
+	}
+
+	// return orders list in JSON format
+	return c.JSON(likes)
+
+}
+
 func GetLikesByPost(c *fiber.Ctx) error {
 
 	id := c.Params("post_id")

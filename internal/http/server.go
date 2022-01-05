@@ -8,6 +8,7 @@ import (
 	db "github.com/jaysonmulwa/cuisine/database"
 	auth "github.com/jaysonmulwa/cuisine/internal/handler/auth"
 	comments "github.com/jaysonmulwa/cuisine/internal/handler/comments"
+	favorites "github.com/jaysonmulwa/cuisine/internal/handler/favorites"
 	likes "github.com/jaysonmulwa/cuisine/internal/handler/likes"
 	posts "github.com/jaysonmulwa/cuisine/internal/handler/posts"
 	users "github.com/jaysonmulwa/cuisine/internal/handler/users"
@@ -65,15 +66,16 @@ func SetupRoutes() {
 	app.Put("/comments/flag/:id", comments.FlagComment)
 
 	//likes.go
+	app.Get("/likes", likes.GetLikes)
 	app.Get("/likes/:post_id", likes.GetLikesByPost)
 	app.Get("/likes/by_user/:post_id/:user_id", likes.GetLikesByPostForUser)
 	app.Post("/likes", likes.CreateLike)
 	app.Delete("/likes/:id", likes.DeleteLike)
 
 	//favorites.go
-	app.Get("/favorites/:user_id", likes.GetFavoritesByUser)
-	app.Post("/favorites", likes.CreateFavorite)
-	app.Delete("/favorites/:id", likes.DeleteFavorite)
+	app.Get("/favorites/:user_id", favorites.GetFavoritesByUser)
+	app.Post("/favorites", favorites.CreateFavorite)
+	app.Delete("/favorites/:id", favorites.DeleteFavorite)
 
 	app.Listen(":4000")
 

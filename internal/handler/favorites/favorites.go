@@ -14,19 +14,20 @@ import (
 //Todo! Get actual posts
 func GetFavoritesByUser(c *fiber.Ctx) error {
 
-	id := c.Params("post_id")
-	usr := c.Params("user_id")
+	//id := c.Params("post_id")
+	//usr := c.Params("user_id")
 
-	postId, err := primitive.ObjectIDFromHex(id)
-	userId, _ := primitive.ObjectIDFromHex(usr)
+	//postId, err := primitive.ObjectIDFromHex(id)
+	//userId, err := primitive.ObjectIDFromHex(usr)
 
 	// the provided ID might be invalid ObjectID
-	if err != nil {
-		return c.SendStatus(400)
-	}
+	// if err != nil {
+	// 	return c.SendStatus(400)
+	// }
 
 	// get all record as a cursor
-	query := bson.D{{Key: "post_id", Value: postId}, {Key: "user_id", Value: userId}}
+	//query := bson.D{{Key: "post_id", Value: postId}, {Key: "user_id", Value: userId}}
+	query := bson.D{{Key: "user_id", Value: 1}}
 	cursor, err := db.GetMongo().Db.Collection("favorites").Find(c.Context(), query)
 
 	if err != nil {
